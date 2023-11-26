@@ -19,9 +19,10 @@ def test_str(item1):
 def test_class_Item_name1(item1):
     assert item1.name == 'Смартфон'
 
+
 def test_class_Item_name2(item1):
-        item1.name = 'Другое имя'
-        assert item1.name == 'Другое имя'
+    item1.name = 'Другое имя'
+    assert item1.name == 'Другое имя'
 
 
 def test_class_Item_name3(item1):
@@ -61,3 +62,8 @@ def test_string_to_number(string, expected_result):
 def test_instantiate_from_csv():
     Item.instantiate_from_csv('src/items.csv')
     assert len(Item.all) == 5
+
+
+def test_add(item1):
+    with pytest.raises(AttributeError):
+        item1 + 100
