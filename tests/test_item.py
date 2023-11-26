@@ -7,12 +7,27 @@ from src.item import Item
 def item1():
     return Item("Смартфон", 10000, 20)
 
+
+def test_repr(item1):
+    assert repr(item1) == "Item('Смартфон', 10000, 20)"
+
+
+def test_str(item1):
+    assert str(item1) == 'Смартфон'
+
+
 def test_class_Item_name1(item1):
     assert item1.name == 'Смартфон'
 
 def test_class_Item_name2(item1):
+        item1.name = 'Другое имя'
+        assert item1.name == 'Другое имя'
+
+
+def test_class_Item_name3(item1):
     item1.name = 'СуперСмартфон'
     assert item1.name == 'СуперСмарт'
+
 
 def test_class_Item_price(item1):
     assert item1.price == 10000
@@ -46,4 +61,3 @@ def test_string_to_number(string, expected_result):
 def test_instantiate_from_csv():
     Item.instantiate_from_csv('src/items.csv')
     assert len(Item.all) == 5
-
