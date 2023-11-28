@@ -33,7 +33,7 @@ class Phone(Item):
     def number_of_sim(self, number_of_sim: int) -> None:
         """ Сеттер для приватного атрибута number_of_sim
         Проверяет число сим-карт, если меньше нуля или не целое вызывает ошибку"""
-        if number_of_sim <= 0 or number_of_sim is not int:
+        if number_of_sim <= 0 or type(number_of_sim) is float:
             raise ValueError('Количество физических SIM-карт должно быть целым числом больше нуля.')
         else:
             self.__number_of_sim = number_of_sim
