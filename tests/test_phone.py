@@ -26,8 +26,8 @@ def test_number_of_sim_1(phone1):
 
 
 def test_number_of_sim_2(phone1):
-    phone1.number_of_sim = 1
-    assert phone1.number_of_sim == 1
+    phone1.number_of_sim = 2
+    assert phone1.number_of_sim == 2
 
 
 def test_number_of_sim_invalid_1(phone1):
