@@ -3,21 +3,27 @@ from pathlib import Path
 from typing import List
 
 
+class InstantiateCSVError(Exception):
+    def __init__(self, *args, **kwargs):
+        self.message = args[0] if args else 'Файл item.csv поврежден'
+
+
 class Item:
     """
     Класс для представления товара в магазине.
     """
+
     pay_rate = 1.0
     all: List = []
 
     @staticmethod
     def string_to_number(string_number: str) -> int:
         """
-                Статметод переводит число заданное строкой в целое число
-                :param string_number - строка, содержащая число
+        Статметод переводит число заданное строкой в целое число
+        :param string_number - строка, содержащая число
 
-                :return: целое число.
-                """
+        :return: целое число.
+        """
         return int(float(string_number))
 
     def __init__(self, name: str, price: float, quantity: int) -> None:
@@ -34,38 +40,46 @@ class Item:
         self.all = self.all.append(self)
 
     def __repr__(self):
-        return f"{self.__class__.__name__}('{self.__name}', {self.price}, {self.quantity})"
+        return (
+            f"{self.__class__.__name__}('{self.__name}', {self.price}, {self.quantity})"
+        )
 
     def __str__(self):
         return f"{self.__name}"
 
     @property
     def name(self) -> str:
-        """ Геттер для приватного атрибута name"""
+        """Геттер для приватного атрибута name"""
         return self.__name
 
     @name.setter
     def name(self, name: str) -> None:
-        """ Сеттер для приватного атрибута name
+        """Сеттер для приватного атрибута name
         Проверяет длину имени name, если больше 10 символов обрезает строку"""
         if len(name) <= 10:
             self.__name = name
         else:
-            print('Exception: Длина наименования товара превышает 10 символов.')
+            print("Exception: Длина наименования товара превышает 10 символов.")
             self.__name = name[0:10]
 
     @classmethod
-    def instantiate_from_csv(cls, relative_path: str) -> None:
-        """ Классовый метод
+    def instantiate_from_csv(cls, path: str) -> None:
+        """Классовый метод
         Инициализирует экземпляры класса `Item` данными из файла _src/items.csv
         :param relative_path - относительный путь к файлу csv
-                """
+        """
         cls.all = []
-        with open(Path.cwd().parents[0] / relative_path, newline='') as csvfile:
-            reader = csv.DictReader(csvfile)
-            for row in reader:
-                name, price, quantity = row['name'], row['price'], row['quantity']
-                cls(name, float(price), int(quantity))
+        try:
+            with open(Path(Path.cwd().parent, path), newline="", encoding='utf-8') as csvfile:
+                reader = csv.DictReader(csvfile)
+                for row in reader:
+                    if len(row) == 3:
+                        name, price, quantity = row['name'], row['price'], row['quantity']
+                        cls(name, float(price), int(quantity))
+                    else:
+                        raise InstantiateCSVError('Файл item.csv поврежден')
+        except FileNotFoundError:
+            raise FileNotFoundError('Файл не найден')
 
     def calculate_total_price(self) -> float:
         """
