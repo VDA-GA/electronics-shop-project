@@ -2,28 +2,29 @@ from src.item import Item
 
 
 class MixinLang:
-    language = 'EN'
+    language = "EN"
 
     @classmethod
     def change_language(cls) -> str:
         """Метод меняющий раскладку клавиатуры"""
-        if cls.language == 'EN':
-            cls.language = 'RU'
+        if cls.language == "EN":
+            cls.language = "RU"
         else:
-            cls.language = 'EN'
+            cls.language = "EN"
         return cls.language
 
 
 class Keyboard(Item, MixinLang):
-
-    def __init__(self, name: str, price: float, quantity: int, language: str = MixinLang.language):
+    def __init__(
+        self, name: str, price: float, quantity: int, language: str = MixinLang.language
+    ):
         """
-                Создание экземпляра класса Keyboard дочерний от Item
-                :param name: Название клавиатуры.
-                :param price: Цена за одну клавиатуру.
-                :param quantity: Количество клавиатур в магазине.
-                :param language: Раскладка клавиатуры
-                """
+        Создание экземпляра класса Keyboard дочерний от Item
+        :param name: Название клавиатуры.
+        :param price: Цена за одну клавиатуру.
+        :param quantity: Количество клавиатур в магазине.
+        :param language: Раскладка клавиатуры
+        """
         super().__init__(name, price, quantity)
         self.__language = language
 
@@ -35,7 +36,7 @@ class Keyboard(Item, MixinLang):
 
     @property
     def language(self) -> str:
-        """ Геттер для приватного атрибута language"""
+        """Геттер для приватного атрибута language"""
         return self.__language
 
     def change_lang(self) -> None:

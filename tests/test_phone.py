@@ -1,4 +1,5 @@
 import pytest
+
 from src.item import Item
 from src.phone import Phone
 
@@ -18,7 +19,7 @@ def test_repr(phone1):
 
 
 def test_str(phone1):
-    assert str(phone1) == 'iPhone 14'
+    assert str(phone1) == "iPhone 14"
 
 
 def test_number_of_sim_1(phone1):

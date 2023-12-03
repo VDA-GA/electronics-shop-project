@@ -1,6 +1,7 @@
 """Здесь надо написать тесты с использованием pytest для модуля item."""
 import pytest
-from src.item import Item
+
+from src.item import Item, InstantiateCSVError
 
 
 @pytest.fixture
@@ -13,21 +14,21 @@ def test_repr(item1):
 
 
 def test_str(item1):
-    assert str(item1) == 'Смартфон'
+    assert str(item1) == "Смартфон"
 
 
 def test_class_Item_name1(item1):
-    assert item1.name == 'Смартфон'
+    assert item1.name == "Смартфон"
 
 
 def test_class_Item_name2(item1):
-    item1.name = 'Другое имя'
-    assert item1.name == 'Другое имя'
+    item1.name = "Другое имя"
+    assert item1.name == "Другое имя"
 
 
 def test_class_Item_name3(item1):
-    item1.name = 'СуперСмартфон'
-    assert item1.name == 'СуперСмарт'
+    item1.name = "СуперСмартфон"
+    assert item1.name == "СуперСмарт"
 
 
 def test_class_Item_price(item1):
@@ -52,16 +53,24 @@ def test_apply_discount(item1):
     assert item1.price == 8000
 
 
-@pytest.mark.parametrize('string, expected_result', [('5', 5),
-                                                     ('5.0', 5),
-                                                     ('5.5', 5)])
+@pytest.mark.parametrize("string, expected_result", [("5", 5), ("5.0", 5), ("5.5", 5)])
 def test_string_to_number(string, expected_result):
     assert Item.string_to_number(string) == expected_result
 
 
-def test_instantiate_from_csv():
-    Item.instantiate_from_csv('src/items.csv')
+def test_instantiate_from_csv_1():
+    Item.instantiate_from_csv("src/items.csv")
     assert len(Item.all) == 5
+
+
+def test_instantiate_from_csv_2():
+    with pytest.raises(FileNotFoundError):
+        Item.instantiate_from_csv("data/items.csv")
+
+
+def test_instantiate_from_csv_3():
+    with pytest.raises(InstantiateCSVError):
+        Item.instantiate_from_csv("tests/items1.csv")
 
 
 def test_add(item1):
